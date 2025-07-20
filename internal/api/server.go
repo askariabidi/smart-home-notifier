@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/askariabidi/smart-home-notifier/internal/sensor"
 	"github.com/askariabidi/smart-home-notifier/internal/storage"
+	"github.com/streadway/amqp"
 )
 
 type SensorEvent struct {
@@ -18,11 +20,16 @@ type SensorEvent struct {
 	Timestamp string `json:"timestamp"`
 }
 
-func StartServer() {
+var ch *amqp.Channel // Global RabbitMQ channel
+
+func StartServer(rabbitChannel *amqp.Channel) {
+	ch = rabbitChannel // Assign the RabbitMQ channel
+
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/logs", logsHandler)
 	http.HandleFunc("/status", statusHandler)
 	http.HandleFunc("/dashboard", dashboardHandler)
+	http.HandleFunc("/simulate", simulateHandler)
 
 	log.Println("HTTP server listening on :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -121,4 +128,26 @@ func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl.Execute(w, data)
+}
+
+func simulateHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		sensorType := r.FormValue("sensor")
+		value := "detected"
+		if sensorType == "temperature" {
+			value = "27.5°C"
+		}
+		sensor.SendSensorEvent(ch, sensorType, value)
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		return
+	}
+
+	// GET request - render simulate page
+	tmplPath := filepath.Join("internal", "templates", "simulate.html")
+	tmpl, err := template.ParseFiles(tmplPath)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+		return
+	}
+	tmpl.Execute(w, nil)
 }
