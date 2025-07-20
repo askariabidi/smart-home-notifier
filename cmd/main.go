@@ -4,7 +4,6 @@ import (
 	"github.com/askariabidi/smart-home-notifier/internal/api"
 	"github.com/askariabidi/smart-home-notifier/internal/config"
 	"github.com/askariabidi/smart-home-notifier/internal/consumer"
-	"github.com/askariabidi/smart-home-notifier/internal/sensor"
 	"github.com/askariabidi/smart-home-notifier/internal/storage"
 )
 
@@ -14,16 +13,12 @@ func main() {
 	defer conn.Close()
 	defer ch.Close()
 
-	// Initialize SQLite database
+	// Initialize SQLite DB and create sensor_events table
 	storage.InitDB()
 
-	// Simulate two sensor events
-	sensor.SendSensorEvent(ch, "motion", "detected")
-	sensor.SendSensorEvent(ch, "temperature", "27.5°C")
-
-	// Start consumer in background
+	// Start consuming sensor events in background
 	go consumer.ConsumeEvents(ch)
 
-	// Start the web server (REST + HTML)
-	api.StartServer()
+	// Start HTTP server (REST + dashboard + simulator)
+	api.StartServer(ch)
 }
