@@ -1,18 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Simulate Sensor Events</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    button { padding: 10px 20px; margin: 10px; font-size: 16px; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Simulate Sensor Events</title>
+    <link rel="icon" href="https://www.svgrepo.com/show/360390/home-iot.svg" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f7f7f7;
+            color: #333;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        form {
+            display: inline-block;
+        }
+        button {
+            background-color: #1976d2;
+            color: white;
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            background-color: #0d47a1;
+        }
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            color: #1976d2;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-  <h1>Simulate Sensor Events</h1>
-  <form method="POST" action="/simulate">
-    <button type="submit" name="sensor" value="motion">Simulate Motion</button>
-    <button type="submit" name="sensor" value="temperature">Simulate Temperature</button>
-  </form>
+    <h1>Simulate Sensor Events</h1>
+    <form method="POST" action="/simulate">
+        <button type="submit" name="sensor" value="motion">Simulate Motion</button>
+        <button type="submit" name="sensor" value="temperature">Simulate Temperature</button>
+    </form>
+    <br />
+    <a href="/dashboard">← Back to Dashboard</a>
 </body>
 </html>
