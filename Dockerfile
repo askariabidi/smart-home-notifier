@@ -1,5 +1,5 @@
 # Start from the official Go image
-FROM golang:1.21-alpine
+FROM golang:1.24.5-alpine
 
 # Install build tools and SQLite driver requirements
 RUN apk add --no-cache gcc musl-dev sqlite
