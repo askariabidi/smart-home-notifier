@@ -86,7 +86,11 @@ This will:
 
 ## 📸 Screenshots
 
-> _Add screenshots of `/dashboard` and `/simulate` here_
+### 🖥️ Dashboard
+![Dashboard Screenshot](images/dashboard.png)
+
+### 🎛️ Simulate Event Page
+![Simulate Screenshot](images/simulate.png)
 
 ---
 
