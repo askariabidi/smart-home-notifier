@@ -1,6 +1,6 @@
 # Smart Home Event Notification System
 
-A distributed system that simulates a smart home environment with event notifications using **RabbitMQ**, **Go**, **SQLite**, and **REST APIs**. Sensor data is processed in real-time and made available via APIs and a web dashboard.
+A distributed system that simulates a smart home environment with event notifications using **RabbitMQ**, **Go**, **SQLite**, and **REST APIs**. Sensor data is processed in real-time and made available via APIs and a polished web dashboard.
 
 ---
 
@@ -10,87 +10,83 @@ A distributed system that simulates a smart home environment with event notifica
 - 🐇 RabbitMQ message queue for event delivery
 - 🛠️ Backend service in Go
 - 💾 SQLite database for event persistence
-- 🌐 RESTful APIs for retrieving logs and system status
-- 📊 Web dashboard and simulator interface using `html/template`
+- 🌐 RESTful APIs for retrieving logs and status
+- 🖥️ HTML dashboard and simulator with auto-refresh
+- 🐳 Docker support (app + RabbitMQ)
 
 ---
 
 ## 🧱 Technologies Used
 
-- **Go** (Golang)
+- **Go** (Golang 1.24.5)
 - **RabbitMQ** (via Docker)
-- **SQLite** (using `mattn/go-sqlite3`)
+- **SQLite** (with `go-sqlite3`)
 - **HTML Templates** (Go’s `html/template`)
-- **Docker** *(optional, for deployment)*
+- **Docker** and **Docker Compose**
 
 ---
 
 ## 🧠 Architecture
 
 ```
-[Sensor Simulator]
-        ↓
-[RabbitMQ Queue]
-        ↓
-[Go Consumer Service] ──→ [SQLite DB]
-        ↓
-  [REST API + Dashboard]
+[Sensor Simulator Page]  → (POST /simulate)
+         ↓
+   [RabbitMQ Queue]
+         ↓
+[Go Consumer Service] → [SQLite DB]
+         ↓
+     [REST APIs + Web UI]
 ```
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Prerequisites
-
-- Go 1.18+ installed
-- Docker installed (for RabbitMQ)
-
-### 2. Run RabbitMQ via Docker
-
-```bash
-docker run -d --hostname smart-home-rabbit --name smart-home-rabbit \
-  -p 5672:5672 -p 15672:15672 rabbitmq:3-management
-```
-
-Visit [http://localhost:15672](http://localhost:15672)  
-**Username:** `guest` • **Password:** `guest`
-
----
-
-### 3. Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/askariabidi/smart-home-notifier.git
 cd smart-home-notifier
-go mod tidy
 ```
 
 ---
 
-### 4. Run the App
+### 2. Start with Docker
 
 ```bash
-go run ./cmd
+docker-compose up --build
 ```
+
+This will:
+- Start RabbitMQ (with UI on port 15672)
+- Build and run your Go application (on port 8080)
 
 ---
 
-## 🌐 Available Endpoints
+## 🌐 Web Interface & API Endpoints
 
-| Route           | Method | Description                         |
-|-----------------|--------|-------------------------------------|
-| `/`             | GET    | Welcome message                     |
-| `/logs`         | GET    | All stored sensor event logs        |
-| `/status`       | GET    | Latest reading per sensor           |
-| `/dashboard`    | GET    | HTML dashboard (table view)         |
-| `/simulate`     | GET    | HTML form to simulate sensor events |
+| Route             | Method | Description                                 |
+|------------------|--------|---------------------------------------------|
+| `/`              | GET    | Welcome message                             |
+| `/dashboard`     | GET    | Dashboard UI showing sensor values          |
+| `/simulate`      | GET/POST | Trigger simulated sensor events           |
+| `/logs`          | GET    | JSON list of all events                     |
+| `/status`        | GET    | JSON of latest value per sensor             |
+| `http://localhost:15672` | - | RabbitMQ Web UI (guest / guest)         |
+
+---
+
+## 📦 Docker File Structure
+
+- `Dockerfile` – builds the Go app
+- `docker-compose.yml` – starts both app and RabbitMQ
+- `.dockerignore` – avoids copying unnecessary files
 
 ---
 
 ## 📸 Screenshots
 
-*Add screenshots of your dashboard and simulate page here*
+> _Add screenshots of `/dashboard` and `/simulate` here_
 
 ---
 
@@ -98,8 +94,7 @@ go run ./cmd
 
 **Syed Mohammad Askari Abidi**  
 Master’s in Software Science and Technology  
-University of Florence, 2024–2025
-
+University of Florence, 2024–2025  
 GitHub: [@askariabidi](https://github.com/askariabidi)
 
 ---
