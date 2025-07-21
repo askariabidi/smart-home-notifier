@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"github.com/askariabidi/smart-home-notifier/internal/sensor"
 	"github.com/askariabidi/smart-home-notifier/internal/storage"
@@ -117,6 +118,13 @@ func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(&s.Sensor, &s.Value, &s.Timestamp); err != nil {
 			continue
 		}
+
+		// Format timestamp to a readable format
+		t, err := time.Parse(time.RFC3339, s.Timestamp)
+		if err == nil {
+			s.Timestamp = t.Format("02 Jan 2006, 15:04")
+		}
+
 		data = append(data, s)
 	}
 
