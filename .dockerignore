@@ -1,0 +1,7 @@
+# .dockerignore
+*.db
+*.log
+vendor
+.git
+.idea
+*.exe
